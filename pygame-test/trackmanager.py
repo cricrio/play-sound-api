@@ -2,6 +2,7 @@
 
 from os import walk
 from os import path
+from tinytag import TinyTag
 
 from models.track import Track
 
@@ -10,7 +11,8 @@ def getAllTracks(myPath):
     trackObjects = []
     tracks = getFiles(myPath)
     for a in tracks:
-        trackObjects.append({'file':a,'id':i})
+        tag = TinyTag.get(a)
+        trackObjects.append( {'file':a,'id':i,'album':tag.album,'title':tag.title,'artist':tag.artist} )
         i = i+1
     return trackObjects
 
