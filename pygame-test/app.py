@@ -14,7 +14,7 @@ player_state = {}
 
 parser = reqparse.RequestParser()
 parser.add_argument('state')
-parser.add_argument('track')
+parser.add_argument('tracks',action='append',type=int)
 
 def abort_if_track_doesnt_exist(track_id):
     if track_id  > len(tracks) - 1:
@@ -27,10 +27,8 @@ class State(Resource):
     def put(self):
         args = parser.parse_args()
         state = args['state']
-        track_id = args['track']
         if state == 'play':
-            id = int(track_id)
-            player.play(id)
+            player.play()
         elif state == 'pause':
             player.pause()
         elif state == 'stop':
@@ -39,33 +37,24 @@ class State(Resource):
 
 api.add_resource(State,'/state')
 
-class Play(Resource):
-    def get(self,track_id):
-        id = int(track_id)
-        player.play(id)
-        return "playing",200
-
-
-api.add_resource(Play, '/play/<track_id>')
-
-
-class Stop(Resource):
-    def get(self):
-        player.stop()
-        return "stoped",200
-
-
-
-api.add_resource(Stop, '/stop')
-
-
 class Tracks(Resource):
     def get(self):
     	print(tracks)
     	return tracks
 
-
 api.add_resource(Tracks, '/tracks')
+
+class Queue(Resource):
+    def get(self):
+        return player.get_queue()
+    def put(self):
+        args = parser.parse_args()
+        tracks = args['tracks']
+        for track in tracks:
+            player.add_to_queue(track)
+        return player.get_queue()
+
+api.add_resource(Queue, '/queue')
 
 
 if __name__ == "__main__":
