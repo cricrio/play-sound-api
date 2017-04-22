@@ -11,7 +11,12 @@ def getAllTracks(myPath):
     trackObjects = []
     tracks = getFiles(myPath)
     for a in tracks:
-        tag = TinyTag.get(a)
+        tag = TinyTag.get(a,image=True)
+        cover_data = tag.get_image()
+        if cover_data:
+            cover_name = a + '.jpg'
+            with open(cover_name,"wb") as f:
+                f.write(cover_data)
         trackObjects.append( {'file':a,'id':i,'album':tag.album,'title':tag.title,'artist':tag.artist} )
         i = i+1
     return trackObjects

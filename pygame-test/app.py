@@ -3,10 +3,12 @@
 from flask import json
 from flask import Flask
 from flask_restful import reqparse, abort, Resource, Api
+from flask_cors import CORS, cross_origin
 
 from player_service import Player_Service
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 tracks = []
 player_state = {}
@@ -59,4 +61,5 @@ api.add_resource(Queue, '/queue')
 
 if __name__ == "__main__":
     player = Player_Service('musics')
+    tracks = player.get_tracks()
     app.run(debug=True)
