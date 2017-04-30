@@ -7,12 +7,12 @@ from models.track import Track
 
 def getAllTracks(myPath):
     i = 0
-    trackObjects = []
+    track_objects = []
     tracks = getFiles(myPath)
     for a in tracks:
-        trackObjects.append(Track(a,i))
+        track_objects.append(Track(a,i))
         i = i+1
-    for tr in trackObjects:
+    for tr in track_objects:
         print(tr.__dict__)
 
 

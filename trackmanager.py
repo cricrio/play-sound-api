@@ -6,36 +6,42 @@ from tinytag import TinyTag
 
 from models.track import Track
 
+
 def getAllTracks(myPath):
     i = 0
-    trackObjects = []
+    track_objects = []
     tracks = getFiles(myPath)
-    for a in tracks:
-        tag = TinyTag.get(a,image=True)
-        cover_data = tag.get_image()
-        if cover_data:
-            cover_name = a + '.jpg'
-            with open(cover_name,"wb") as f:
-                f.write(cover_data)
-        trackObjects.append( {'file':a,'id':i,'album':tag.album,'title':tag.title,'artist':tag.artist} )
-        i = i+1
-    return trackObjects
+    for track in tracks:
+        tag = TinyTag.get(track)
+        # if tag.title == Null:
+        #     tag.title = a
+        # if tag.album == Null:
+        #     tag.album = "Inconnue"
+        # if tag.artist == Null:
+        #     tag.artist = "Inconnue"
+        track = {'file': track,
+                 'id': i,
+                 'album': tag.album,
+                 'title': tag.title,
+                 'artist': tag.artist}
+        track_objects.append(track)
+        i = i + 1
+    return track_objects
+
 
 def getFiles(myPath):
-    all = {}
     files = []
-    folders = []
     for (dirpath, dirnames, filenames) in walk(myPath):
         files.extend(addFiles(dirpath, filenames))
     for subfolders in dirnames:
         subs = getFiles(subfolders)
-        files.extend(addFiles(dirpath, filename))
+        files.extend(addFiles(dirpath, subs))
     return files
 
 
 def addFiles(dirpath, files):
     trackfiles = []
-    for myFile in files:
-        if myFile.endswith(".ogg") or myFile.endswith(".mp3"):
-            trackfiles.append(path.join(dirpath, myFile))
+    for my_file in files:
+        if my_file.endswith(".ogg") or my_file.endswith(".mp3"):
+            trackfiles.append(path.join(dirpath, my_file))
     return trackfiles

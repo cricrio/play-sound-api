@@ -3,3 +3,4 @@ pygame
 tinytag
 flask_restful
 flask-cors
+pyglet

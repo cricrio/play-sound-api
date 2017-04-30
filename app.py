@@ -30,6 +30,7 @@ class State(Resource):
         args = parser.parse_args()
         state = args['state']
         if state == 'play':
+            print("get play")
             player.play()
         elif state == 'pause':
             player.pause()
