@@ -12,7 +12,7 @@ from models.player_state import Player_State
 class Player_Service:
 
     def __init__(self,music_path):
-        self._player = piglet.media.Player()
+        self._player = pyglet.media.Player()
         self._queue = []
         self._tracks = getAllTracks(music_path)
         self._state = Player_State()
